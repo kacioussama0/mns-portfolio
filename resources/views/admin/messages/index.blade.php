@@ -12,7 +12,7 @@
         @endif
 
         <div class="table-responsive my-3">
-            <table class="table table-striped">
+            <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>first name</th>

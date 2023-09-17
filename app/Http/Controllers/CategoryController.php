@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -34,7 +33,7 @@ class CategoryController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|max:255|unique:categories',
-            'slug' => 'required',
+            'slug' => 'required|unique:categories',
             'type' => 'required',
         ]);
 
@@ -46,7 +45,7 @@ class CategoryController extends Controller
             return redirect()->route('categories.index')->with(['success' => 'Category created successfully']);
         }
 
-        return abort(500);
+        abort(500);
     }
 
     /**
@@ -84,7 +83,7 @@ class CategoryController extends Controller
             return redirect()->route('categories.index')->with(['success' => 'Category updated successfully']);
         }
 
-        return abort(500);
+        abort(500);
     }
 
     /**
@@ -95,6 +94,7 @@ class CategoryController extends Controller
         if($category->delete()) {
             return redirect()->route('categories.index')->with(['success' => 'Category deleted successfully']);
         }
+
         return abort(500);
     }
 }

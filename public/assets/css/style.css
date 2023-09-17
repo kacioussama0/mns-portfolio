@@ -1638,7 +1638,7 @@ h3.education_place {
     content: "";
     right: -22px;
     top: 80px;
-    border-left:11px solid #ff517e;
+    border-left:11px solid transparent;
     border-right: 11px solid #ffffff00;
     border-top: 11px solid #ffffff00;
     border-bottom: 11px solid #ffffff00;
@@ -1650,7 +1650,7 @@ h3.education_place {
     left: -22px;
     top: 96px;
     border-left: 11px solid #f6483a00;
-    border-right:11px solid #ff517e;
+    border-right:11px solid transparent;
     border-top: 11px solid #ffffff00;
     border-bottom: 11px solid #ffffff00;
 }
@@ -1701,6 +1701,11 @@ h3.education_place {
     padding-left: 0;
     padding-right: 15px;
 }
+
+.experience_section .col-md-12:nth-child(1) .ex_leftside:after {
+    border-left-color:#ff517e;
+}
+
 .experience_section .col-md-12:nth-child(2) .ex_leftside {
     background: #ffc454;
 }
@@ -1720,10 +1725,10 @@ h3.education_place {
     border-left-color:#ffc454;
 }
 .experience_section .col-md-12:nth-child(3) .ex_leftside:after {
-	border-right-color: #ff754a;
+	border-left-color: #ff754a;
 }
 .experience_section .col-md-12:nth-child(4) .ex_leftside:after {
-    border-right-color:#00c8da;
+    border-left-color:#00c8da;
 }
 .experience_section .col-md-12:nth-child(5) .ex_leftside:after {
     border-left-color:#ffc454;
@@ -1795,6 +1800,12 @@ h2.project_heading:after {
     -o-transition: all .3s ease;
     transition: all .3s ease;
 }
+
+.project_pera:hover {
+    text-overflow: ellipsis;
+    line-clamp: 5;
+}
+
 /*================== 09 End Services section css ==================  */
 
 /*================== 10 Start Projects section css ==================  */

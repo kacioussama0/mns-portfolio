@@ -6,7 +6,7 @@
 
 
 
-        <form action="{{route('experience.store')}}" method="POST">
+        <form action="{{route('education.store')}}" method="POST">
 
             @csrf
 

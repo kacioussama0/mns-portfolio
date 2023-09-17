@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -12,7 +14,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return view('admin.posts.index',compact('posts'));
     }
 
     /**
@@ -20,7 +23,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::where('type','posts')->get();
+        return view('admin.posts.create',compact('categories'));
     }
 
     /**
@@ -28,7 +32,30 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title'=> 'required',
+            'description'=> 'required',
+            'slug'=> 'required',
+            'category_id'=> 'required',
+            'thumbnail'=> 'required',
+        ]);
+
+        $image = $request->file('thumbnail')->store('posts','public');
+
+        $created = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'thumbnail' => $image,
+            'slug' => $request->slug,
+            'category_id' => $request->category_id,
+            'is_published' => $request->is_published ? 1 : 0
+        ]);
+
+        if($created) {
+            return redirect()->route('posts.index')->with(['success' => 'Post created successfully']);
+        }
+
+        return abort(500);
     }
 
     /**
@@ -44,7 +71,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $categories = Category::where('type','posts')->get();
+        return view('admin.posts.edit',compact('categories','post'));
     }
 
     /**
@@ -52,7 +80,36 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+
+
+        $data = $request->validate([
+            'title'=> 'required',
+            'description'=> 'required',
+            'slug'=> 'required',
+            'category_id'=> 'required',
+        ]);
+
+        $image = '';
+
+        if($request->hasFile('thumbnail')) {
+            Storage::delete('public/' . $post ->thumbnail);
+            $image = $request->file('thumbnail')->store('posts','public');
+        }
+
+        $created = $post->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'thumbnail' => $image ? $image : $post -> thumbnail,
+            'slug' => $request->slug,
+            'category_id' => $request->category_id,
+            'is_published' => $request->is_published ? 1 : 0
+        ]);
+
+        if($created) {
+            return redirect()->route('posts.index')->with(['success' => 'Post updated successfully']);
+        }
+
+         abort(500);
     }
 
     /**
@@ -60,6 +117,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        if($post->delete()){
+            Storage::delete('public/' . $post ->thumbnail);
+            return redirect()->route('posts.index')->with(['success' => 'Post deleted successfully']);
+        }
+        abort(500);
     }
 }

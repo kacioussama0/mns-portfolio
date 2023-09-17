@@ -30,6 +30,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('categories.index') }}">Categories</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('education.index') }}">Education</a>
                         </li>
@@ -46,8 +51,13 @@
                             <a class="nav-link" href="{{ route('services.index') }}">Services</a>
                         </li>
 
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('categories.index') }}">Categories</a>
+                            <a class="nav-link" href="{{ route('projects.index') }}">Projects</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('posts.index') }}">Posts</a>
                         </li>
                     </ul>
 

@@ -6,14 +6,14 @@
     <div class="container">
         <h1>Education</h1>
 
-        <a href="{{route('experience.create')}}" class="btn btn-primary">Add Education</a>
+        <a href="{{route('education.create')}}" class="btn btn-primary">Add Education</a>
 
         @if(Session::has('success'))
             <div class="alert alert-success my-3">{{ Session::get('success') }}</div>
         @endif
 
-        <div class="table-responsive my-3">
-            <table class="table table-striped">
+        <div class="table-responsive my-3 ">
+            <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>title</th>

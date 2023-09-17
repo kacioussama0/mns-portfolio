@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -12,7 +14,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $projects = Project::latest()->get();
+        return view('admin.projects.index',compact('projects'));
     }
 
     /**
@@ -20,7 +23,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::where('type','projects')->get();
+        return view('admin.projects.create',compact('categories'));
     }
 
     /**
@@ -28,7 +32,27 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name'=> 'required',
+            'category_id'=> 'required',
+            'thumbnail'=> 'required',
+            'description' => 'required'
+        ]);
+
+        $image = $request->file('thumbnail')->store('projects','public');
+
+        $created = Project::create([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'thumbnail' => $image,
+        ]);
+
+        if($created) {
+            return redirect()->route('projects.index')->with(['success' => 'Projects created successfully']);
+        }
+
+        abort(500);
     }
 
     /**
@@ -44,7 +68,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        $categories = Category::where('type','projects')->get();
+        return view('admin.projects.edit',compact('project','categories'));
     }
 
     /**
@@ -52,7 +77,32 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $data = $request->validate([
+            'name'=> 'required',
+            'category_id'=> 'required',
+            'description'=> 'required',
+        ]);
+
+        $image = '';
+
+        if($request->hasFile('thumbnail')) {
+            Storage::delete('public/' . $project ->thumbnail);
+            $image = $request->file('thumbnail')->store('projects','public');
+        }
+
+
+        $updated = $project->update([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'thumbnail' => $image ? $image : $project -> thumbnail,
+        ]);
+
+        if($updated) {
+            return redirect()->route('projects.index')->with(['success' => 'Projects updated successfully']);
+        }
+
+        abort(500);
     }
 
     /**
@@ -60,6 +110,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        if($project->delete()) {
+            Storage::delete('public/' . $project ->thumbnail);
+            return redirect()->route('projects.index')->with(['success' => 'Projects deleted successfully']);
+        }
+
+        abort(500);
+
     }
 }

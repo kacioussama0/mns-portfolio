@@ -130,7 +130,7 @@ Assigned to: ThemeForest
 
 	// animated banner text
 	banner_typingtext: function() {
-		if($('.icon').length > 0){
+
 			$('.banner_typingtext').textillate({
 				loop: true,
 				minDisplayTime: 2e3,
@@ -155,7 +155,6 @@ Assigned to: ThemeForest
 					reverse: false
 				}
 			});
-		}
 	},
 	/*------------------------------------------------------------------*/
 
@@ -198,7 +197,20 @@ Assigned to: ThemeForest
 			  gallery: {
 				// options for gallery
 				enabled: true
-			  }
+			  },
+                image: {
+                    titleSrc: function(item) {
+                        return `
+                        <div>
+                            <h4 style="color: #fff" class="mb-2">${item.el.find('img').attr('title')}</h4>
+                            <p style="color: #fff">${item.el.find('img').attr('description')}</p>
+                        </div>
+
+                        `;
+
+                    }
+
+                }
 
 			  // other options
 			});

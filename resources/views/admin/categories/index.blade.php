@@ -13,34 +13,36 @@
         @endif
 
         <div class="table-responsive my-3">
-            <table class="table table-striped">
+            <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Slug</th>
                         <th>Type</th>
+                        <th>Published</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($categories as $category)
+                    @foreach($categories as $post)
                         <tr>
-                            <td>{{$category->name}}</td>
-                            <td>{{$category->slug}}</td>
-                            <td>{{$category->type}}</td>
-                            <td>{{$category->created_at}}</td>
-                            <td>{{$category->updated_at}}</td>
+                            <td>{{$post->name}}</td>
+                            <td>{{$post->slug}}</td>
+                            <td>{{$post->type}}</td>
+                            <td>{{$post->is_published ? "Yes" : "No" }}</td>
+                            <td>{{$post->created_at}}</td>
+                            <td>{{$post->updated_at}}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Actions
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{{route('categories.edit',$category)}}">Edit</a></li>
+                                        <li><a class="dropdown-item" href="{{route('categories.edit',$post)}}">Edit</a></li>
                                         <li>
-                                                <form action="{{route('categories.destroy',$category)}}" method="POST" onsubmit="return confirm('are you sure ?')">
+                                                <form action="{{route('categories.destroy',$post)}}" method="POST" onsubmit="return confirm('are you sure ?')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button class="dropdown-item">Delete</button>
